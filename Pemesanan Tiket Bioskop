@@ -162,3 +162,89 @@ public:
         }
     }
 };
+
+int main() {
+   TicketSystem system;
+
+   // Menambahkan beberapa film ke dalam sistem
+   system.addMovie("The Matrix", "12:00");
+   system.addMovie("Inception", "14:30");
+   system.addMovie("Interstellar", "17:00");
+   system.addMovie("Fight Club", "14:30");
+   system.addMovie("The Dark Knight", "19:00");
+   system.addMovie("Pulp Fiction", "21:30");
+   system.addMovie("Forrest Gump", "10:00");
+   system.addMovie("The Shawshank Redemption", "12:30");
+   system.addMovie("Gladiator", "15:00");
+   system.addMovie("The Godfather", "18:00");
+
+   while (true) {
+       clearScreen();
+       cout << "Menu:\n";
+       cout << "1. Registrasi\n";
+       cout << "2. Login\n";
+       cout << "3. Tambah Film\n";
+       cout << "4. Lihat Jadwal Film\n";
+       cout << "5. Pilih Kursi\n";
+       cout << "6. Konfirmasi Pemesanan\n";
+       cout << "7. Logout\n";
+       cout << "8. Keluar\n";
+
+       int choice;
+       cin >> choice;
+
+       if (choice == 8) break;
+
+       string username, password, title, time;
+       switch (choice) {
+           case 1:
+               cout << "Masukkan username: ";
+               cin >> username;
+               cout << "Masukkan password: ";
+               cin >> password;
+               system.registerUser(username, password);
+               break;
+           case 2:
+               cout << "Masukkan username: ";
+               cin >> username;
+               cout << "Masukkan password: ";
+               cin >> password;
+               system.loginUser(username, password);
+               break;
+           case 3:
+               cout << "Masukkan judul film: ";
+               cin.ignore();
+               getline(cin, title);
+               cout << "Masukkan waktu tayang: ";
+               getline(cin, time);
+               system.addMovie(title, time);
+               break;
+           case 4:
+               system.showMovies();
+               break;
+           case 5:
+               cout << "Masukkan judul film: ";
+               cin.ignore();
+               getline(cin, title);
+               cout << "Masukkan waktu tayang: ";
+               getline(cin, time);
+               system.chooseSeat(title, time);
+               break;
+           case 6:
+               system.confirmBooking();
+               break;
+           case 7:
+               system.logoutUser();
+               break;
+           default:
+               cout << "Pilihan tidak valid.\n";
+               break;
+       }
+
+       cout << "Tekan Enter untuk melanjutkan...";
+       cin.ignore();
+       cin.get();
+   }
+
+   return 0;
+}
