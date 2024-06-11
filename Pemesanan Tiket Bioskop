@@ -101,3 +101,64 @@ public:
        movies.push_back({title, time, vector<vector<bool>>(10, vector<bool>(10, false))});
        cout << "Film berhasil ditambahkan!\n";
    }
+ void showMovies() {
+        clearScreen();
+        cout << "Jadwal Film:\n";
+        for (const auto& movie : movies) {
+            cout << "Judul: " << movie.title << " | Waktu: " << movie.time << "\n";
+        }
+    }
+
+    void chooseSeat(const string& title, const string& time) {
+        clearScreen();
+        for (auto& movie : movies) {
+            if (movie.title == title && movie.time == time) {
+                cout << "Pilih kursi dengan memasukkan nomor baris dan kolom (misal 3 4 untuk baris 3 kolom 4):\n";
+                cout << "Kursi tersedia [O], Kursi terpesan [X]\n\n";
+                cout << "  ";
+                for (size_t j = 0; j < movie.seats[0].size(); ++j) {
+                    cout << " " << j << " ";
+                }
+                cout << endl;
+
+                for (size_t i = 0; i < movie.seats.size(); ++i) {
+                    cout << i << " ";
+                    for (size_t j = 0; j < movie.seats[i].size(); ++j) {
+                        cout << " [" << (movie.seats[i][j] ? "X" : "O") << "] ";
+                    }
+                    cout << endl;
+                }
+
+                int row, col;
+                cout << "\nMasukkan nomor baris: ";
+                cin >> row;
+                cout << "Masukkan nomor kolom: ";
+                cin >> col;
+
+                if (row >= 0 && row < movie.seats.size() && col >= 0 && col < movie.seats[row].size() && !movie.seats[row][col]) {
+                    movie.seats[row][col] = true;
+                    cout << "Kursi";
+                    for (int i = 0; i < 3; ++i) {
+                        delay(500);
+                        cout << ".";
+                    }
+                    cout << " berhasil dipilih!\n";
+                } else {
+                    cout << "Kursi tidak valid atau sudah dipesan.\n";
+                }
+                return;
+            }
+        }
+        cout << "Film tidak ditemukan.\n";
+    }
+
+    void confirmBooking() {
+        clearScreen();
+        if (loggedInUser) {
+            cout << "Tiket berhasil dipesan oleh " << loggedInUser->username << "!\n";
+            cout << "Tampilkan tiket dengan barcode.\n";
+        } else {
+            cout << "Harap login terlebih dahulu.\n";
+        }
+    }
+};
