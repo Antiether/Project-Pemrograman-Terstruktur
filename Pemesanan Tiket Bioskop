@@ -1,1 +1,103 @@
+#include <iostream>
+#include <vector>
+#include <list>
+#include <string>
+#include <cstdlib>
 
+#ifdef _WIN32
+   #include <windows.h>
+#else
+   #include <unistd.h>
+#endif
+
+using namespace std;
+
+// Fungsi untuk membersihkan layar
+void clearScreen() {
+#ifdef _WIN32
+   system("cls");
+#else
+   system("clear");
+#endif
+}
+
+// Fungsi untuk menambahkan jeda
+void delay(int milliseconds) {
+#ifdef _WIN32
+   Sleep(milliseconds);
+#else
+   usleep(milliseconds * 1000);
+#endif
+}
+
+// Struktur untuk menyimpan data pengguna
+struct User {
+   string username;
+   string password;
+};
+
+// Struktur untuk menyimpan data film
+struct Movie {
+   string title;
+   string time;
+   vector<vector<bool>> seats;
+};
+
+// Kelas untuk menangani sistem pemesanan tiket
+class TicketSystem {
+private:
+   vector<User> users;
+   list<Movie> movies;
+   User* loggedInUser = nullptr;
+
+public:
+   void registerUser(const string& username, const string& password) {
+       clearScreen();
+       for (const auto& user : users) {
+           if (user.username == username) {
+               cout << "Username sudah terdaftar. Silakan pilih username lain.\n";
+               return;
+           }
+       }
+       users.push_back({username, password});
+       cout << "Registrasi";
+       for (int i = 0; i < 3; ++i) {
+           delay(500);
+           cout << ".";
+       }
+       cout << " berhasil!\n";
+   }
+
+   void loginUser(const string& username, const string& password) {
+       clearScreen();
+       for (auto& user : users) {
+           if (user.username == username && user.password == password) {
+               loggedInUser = &user;
+               cout << "Login";
+               for (int i = 0; i < 3; ++i) {
+                   delay(500);
+                   cout << ".";
+               }
+               cout << " berhasil!\n";
+               return;
+           }
+       }
+       cout << "Username atau password salah.\n";
+   }
+
+   void logoutUser() {
+       clearScreen();
+       loggedInUser = nullptr;
+       cout << "Logout";
+       for (int i = 0; i < 3; ++i) {
+           delay(500);
+           cout << ".";
+       }
+       cout << " berhasil!\n";
+   }
+
+   void addMovie(const string& title, const string& time) {
+       clearScreen();
+       movies.push_back({title, time, vector<vector<bool>>(10, vector<bool>(10, false))});
+       cout << "Film berhasil ditambahkan!\n";
+   }
